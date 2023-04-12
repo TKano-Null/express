@@ -1,0 +1,53 @@
+version: "2"
+
+services:
+  mongo:
+    image: mongo:5.0.16
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: q-cards-db
+    volumes:
+      - ./data/db:/database
+    networks:
+      - default
+      - mongo-express
+
+  mongo_express:
+    image: mongo-express:1.0.0-alpha.4
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_SERVER: mongo
+    depends_on:
+      - mongo
+    networks:
+      - mongo-express
+
+  app:
+    image: node:16
+    user: "node"
+    env_file: .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/home/node/app
+    working_dir: /home/node/app
+    command: "yarn start"
+    depends_on:
+      - mongo
+    networks:
+      - default
+    tty: true
+
+networks:
+  default:
+    driver: bridge
+  mongo-express:
+    driver: bridge
