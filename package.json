@@ -5,9 +5,11 @@
     "author": "First Last <first.last@example.com>",
     "main": "server.js",
     "scripts": {
-      "start": "node server.js"
+        "start": "node server.js"
     },
     "dependencies": {
-      "express": "^4.16.1"
+        "dotenv": "^16.0.3",
+        "express": "^4.16.1",
+        "mongoose": "^7.0.3"
     }
-  }
+}

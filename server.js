@@ -1,17 +1,21 @@
-'use strict';
-
 const express = require('express');
+const mongoose = require('mongoose');
 
-// Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';
+//const main = async () => {
+  const app = express();
 
-// App
-const app = express();
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
+  mongoose.connect('mongodb://localhost:27017/db-name', {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  });
 
-app.listen(PORT, HOST, () => {
-  console.log(`Running on http://${HOST}:${PORT}`);
-});
+  console.log(mongoose.connection.readyState);
+
+  console.log('MongoDB connected!!');
+
+  app.listen(3001, () => {
+    console.log(`Server up on 3001`);
+  });
+//};
+
+//main();
